@@ -1,0 +1,120 @@
+<%- include("parts/html-head") %>
+<%- include("parts/navbars") %>
+<style>
+    .st1 {
+        width: 450px;
+        border-bottom:3px double #D0D0D0;
+        margin:20px;
+        padding-bottom:10px;
+    }
+    .sub {
+        width:450px;
+        margin:20px;
+        text-align:center;
+    }
+    .t1 {
+        width:100px;
+        float:left;
+        text-align:right;
+        text-shadow: 5px 5px 5px #FFC78E;
+    }
+    fieldset{
+        width: 400px;
+        border-radius: 20px;
+        margin: auto; 
+        background-color:#FCFCFC;  
+    }
+  
+    legend{
+        text-shadow: 5px 5px 5px #EA7500;
+        text-align: center;
+        padding: 15px;
+    }
+    .main01 {
+            position: fixed;
+            width: 1000px;
+            height: 250px;
+            left: 440px;
+            bottom: 0;
+            
+        }
+   
+</style>
+<form action="#" method="post" enctype="multipart/form-data" name='form1' onsubmit="return checkForm()">
+    <fieldset>
+        <legend>SIGN UP</legend>
+        <div class="st1">
+            <label class="t1" for="account1">Account: </label>
+            <input type="text" id="account1"  autofocus autocomplete="off" name="account" placeholder="guest" size="10">
+        </div>
+        <div class="st1">
+            <label class="t1" for="password">Password: </label>
+            <input type="password" id="pwd1" name="password" maxlength="10">
+        </div>
+        <div class="st1">
+            <label for="" class="t1">Gender: </label>
+            <input type="radio" name="gender" value="male" id="m1"><label for="m1">MALE<i class="fa fa-mars" aria-hidden="true"></i></label>
+            <label>
+                <input type="radio" name="gender" value="female">FEMALE<i class="fa fa-venus" aria-hidden="true"></i></label>
+        </div>
+        <div class="st1">
+            <label for="" class="t1">Birth:</label>
+            <input type="date" name="birthday">
+        </div>
+        <div class="st1">
+            <label for="" class="t1">ID Number:</label>
+            <input type="text" pattern="[a-zA-Z]{1}[1-2]{1}\d{8}" name="id number" autocomplete="off">
+        </div>
+        <div class="st1">
+           <label for class="t1 ">E-mail:</label>
+           <input type="email" name="email">
+        </div> 
+        <div id="infobar" class="alert alert-success" role="alert" style="display: none">
+        </div>
+        <div class="sub">
+            <input type="submit" value="Sign Up">
+            <input type="reset" value="Erase">
+        </div>
+
+    </fieldset>
+    <img src="img/born04.jpg" class="main01">
+    
+
+
+
+<%- include("parts/scripts") %>
+<script>
+    const infobar = $('#infobar');
+    function checkForm(){
+        // if(! email_pattern.test(email.val())){
+        //     alert('Email 格式不符')
+        //     return false;
+        // }
+
+        // TODO: 檢查欄位的格式
+
+        $.post('/login', $(document.form1).serialize(), function(data){
+            console.log(data);
+
+            if(data.success){
+                infobar.text('新增成功');
+                infobar.removeClass('alert-danger').addClass('alert-success');
+                setTimeout(function(){
+                    location.href = '/';
+                }, 3000);
+            } else {
+                infobar.text(data.error || '新增失敗');
+                infobar.removeClass('alert-success').addClass('alert-danger');
+                setTimeout(function(){
+                    infobar.slideUp();
+                }, 3000);
+            }
+            infobar.slideDown();
+
+
+        }, 'json');
+
+        return false;
+    }
+</script>
+<%- include("parts/html-foot") %>
